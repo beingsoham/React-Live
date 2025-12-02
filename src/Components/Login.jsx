@@ -4,40 +4,116 @@ import '../styles/login.css';
 
 function Login({ onLogin }) {
 
-    // 1 & 3. FIX: Use array destructuring ([]) for useState and ensure both state and setter are declared.
-    const [username, setUsername] = useState("");
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        enrollmentNo: "",
+        role: "Student", // Default role
+        password: ""
+    });
     const [error, setError] = useState("");
 
-    const handleLogin = () => {
-        // 2. FIX: Complete the strict comparison operator (=== "")
-        if (username.trim() === "") {
-            setError("Username cannot be empty");
-        } else {
-            setError("");
-            onLogin(username);
-        }
-    }; // 4. FIX: Remove extra closing brace here (it's the end of the function body, which is fine, but the function definition was missing the ending semicolon/brace logic from the original prompt's structure).
+    // Handles changes for all input fields
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
 
-    // 5. FIX: The JSX for the return statement must be wrapped in parentheses ().
+    // Moves to the next step in the login process
+    const handleNext = () => {
+        setError(""); // Clear previous errors
+        if (step === 1) {
+            setStep(2);
+        } else if (step === 2 && formData.role === 'Student') {
+            if (!formData.enrollmentNo.trim() || !formData.email.trim()) {
+                setError("Enrollment No. and Email are required.");
+                return;
+            }
+            // A simple email validation
+            if (!/\S+@\S+\.\S+/.test(formData.email)) {
+                setError("Please enter a valid email address.");
+                return;
+            }
+            setStep(3);
+        }
+    };
+
+    // Final login submission
+    const handleLogin = () => {
+        setError("");
+        if (!formData.password) {
+            setError("Password is required.");
+            return;
+        }
+
+        // For Admin, we can add a username check if needed, but for now we just need a password.
+        if (formData.role === 'Admin') {
+            // You can add a username for the admin if you want.
+            // For this example we'll create a default one.
+            const adminData = { ...formData, username: 'Admin User' };
+            onLogin(adminData);
+            return;
+        }
+
+        onLogin(formData);
+    }; 
+
+    // Render different parts of the form based on the current step
+    const renderStep = () => {
+        switch (step) {
+            case 1: // Role Selection
+                return (
+                    <>
+                        <h2>Select Your Role</h2>
+                        <select name="role" value={formData.role} onChange={handleChange}>
+                            <option value="Student">Student</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <button onClick={handleNext}>Next</button>
+                    </>
+                );
+            case 2: // Role-specific fields
+                if (formData.role === 'Student') {
+                    return (
+                        <>
+                            <h2>Student Login</h2>
+                            <input type="email" name="email" value={formData.email} placeholder="Enter Email ID" onChange={handleChange} />
+                            <input type="text" name="enrollmentNo" value={formData.enrollmentNo} placeholder="Enter Enrollment No." onChange={handleChange} />
+                            <button onClick={handleNext}>Next</button>
+                        </>
+                    );
+                } else { // Admin
+                    return (
+                        <>
+                            <h2>Admin Login</h2>
+                            <input type="password" name="password" value={formData.password} placeholder="Enter Password" onChange={handleChange} />
+                            <button onClick={handleLogin}>Login</button>
+                        </>
+                    );
+                }
+            case 3: // Student Password
+                return (
+                    <>
+                        <h2>Enter Password</h2>
+                        <input type="password" name="password" value={formData.password} placeholder="Enter Password" onChange={handleChange} />
+                        <button onClick={handleLogin}>Login</button>
+                    </>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className='Login_container'>
-            <h2>Login Page</h2>
-
-            <input
-                type="text"
-                // FIX: Use 'value' attribute for controlled component, not 'placeholder' for initial value.
-                value={username}
-                placeholder="Enter Username"
-                onChange={(e) => setUsername(e.target.value)}
-            />
-
-            <button onClick={handleLogin}>Login</button>
+            {renderStep()}
             {error && <p className='error'>{error}</p>}
-
         </div>
-    ); // 7. FIX: Remove extra closing brace here (it was incorrectly placed after the return statement).
-    
+    );
 }
 
-// 8. FIX: Export statement must be outside the function scope.
 export default Login;

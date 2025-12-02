@@ -4,10 +4,8 @@
     box-sizing: border-box;
 }
 
-/* --- MONOCHROME BODY/BACKGROUND STYLES --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* FIX: Changed background to a clean, light gray, matching login.css */
     background-color: #f0f0f0;
     min-height: 100vh;
     display: flex;
@@ -17,17 +15,14 @@ body {
 }
 
 .Dashboard_container {
-    /* FIX: Solid white background for the card */
     background: white;
-    padding: 60px 50px; /* Slightly more padding for a cleaner look */
+    padding: 60px 50px; 
     border-radius: 12px;
-    /* FIX: Simple, sharp black shadow */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
     animation: slideInUp 0.6s ease-out;
     text-align: center;
-    /* FIX: Added a subtle border for separation */
     border: 1px solid #ddd;
 }
 
@@ -43,9 +38,8 @@ body {
 }
 
 .Dashboard_container h1 {
-    /* FIX: Sharp, professional black color */
     color: #333;
-    font-size: 36px; /* Larger and more impactful heading */
+    font-size: 36px; 
     margin-bottom: 10px;
     font-weight: 700;
     animation: fadeInDown 0.8s ease-out 0.2s backwards;
@@ -65,7 +59,7 @@ body {
 .Dashboard_container p {
     color: #666;
     font-size: 18px;
-    margin-bottom: 40px; /* Increased margin for better separation */
+    margin-bottom: 40px; 
     animation: fadeIn 0.8s ease-out 0.3s backwards;
 }
 
@@ -78,11 +72,10 @@ body {
     }
 }
 
-/* --- LOGOUT BUTTON STYLES (High-Contrast Red) --- */
+/*  LOGOUT BUTTON STYLES  */
 .Dashboard_container button {
     padding: 14px 32px;
     margin-top: 20px;
-    /* FIX: Changed button to a clear, solid red for the 'Logout' action (a strong visual cue) */
     background: #dc2626; /* Deep Red */
     color: white;
     border: none;
@@ -95,9 +88,8 @@ body {
 }
 
 .Dashboard_container button:hover {
-    background: #b91c1c; /* Darker red on hover */
+    background: #b91c1c; 
     transform: translateY(-2px);
-    /* FIX: Hover shadow for the red button */
     box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
 }
 
